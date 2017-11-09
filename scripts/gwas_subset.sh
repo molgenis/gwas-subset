@@ -1,8 +1,6 @@
 #!/bin/bash
 set -eu
 
-#/groups/umcg-lld/tmp02/umcg-gvdvries
-
 function showHelp(){
 
 cat <<EOH
@@ -26,10 +24,6 @@ trap - EXIT
 exit 0
 }
 
-module load ngs-utils
-module load Molgenis-Compute/v16.11.1-Java-1.8.0_74
-module list
-
 if [ -z ${1:-} ]
 then
 	showHelp
@@ -52,8 +46,6 @@ rawdataDirectory="${outputDirectory}/rawdata"
 mkdir -p "${jobsDirectory}"
 mkdir -p "${resultsDirectory}"
 mkdir -p "${rawdataDirectory}"
-
-EBROOTGWASMINSUBSET="/groups/umcg-lld/tmp02/umcg-mbenjamins/LL_Test/gwas-subset/"
 
 sh "${EBROOTMOLGENISMINCOMPUTE}/molgenis_compute.sh" \
 -p "${EBROOTGWASMINSUBSET}/parameters.csv" \

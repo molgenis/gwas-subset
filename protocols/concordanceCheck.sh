@@ -8,6 +8,7 @@
 #string resultsDirectory
 #string jobsDirectory
 #string concordanceDirectory
+#string CompareGenotypeCallsVersion
 #string listOfSamplesToRemove
 
 # Let's do something
@@ -17,18 +18,17 @@ echo "${resultsDirectory}"
 echo "${listOfSamplesToRemove}"
 echo "${chr}"
 
+module load ${CompareGenotypeCallsVersion}
 
 mkdir -p "${concordanceDirectory}"
 
 echo -e "data1Id\tdata2Id" > ${concordanceDirectory}/samples.chr${chr}.txt
 awk 'FNR > 2{print $2"\t"$2}' ${rawdataDirectory}/chr${chr}.sample >> ${concordanceDirectory}/samples.chr${chr}.txt
 
-awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {print FILENAME,basename(FILENAME),"firstRowCount="start,"lastRowCount="NF}' ${rawdataDirectory}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.before
+awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {var=FILENAME; n=split(var,a,/\//); print a[n],"firstRowCount="start,"lastRowCount="NF}' ${rawdataDirectory}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.before
 
 #
-EBROOTCOMPAREGENOTYPE='/groups/umcg-lifelines/tmp04/umcg-gvdvries/releaseTest/rawdata/CompareGenotypeCalls-1.7-SNAPSHOT'
-
-java -jar ${EBROOTCOMPAREGENOTYPE}/CompareGenotypeCalls.jar \
+java -XX:ParallelGCThreads=1 -Djava.io.tmpdir=${concordanceDirectory} -Xmx9g -jar ${EBROOTCOMPAREGENOTYPE}/CompareGenotypeCalls.jar \
 -d1 "${rawdataDirectory}/chr${chr}" \
 -D1 GEN \
 -d2 "${resultsDirectory}/chr${chr}" \
@@ -37,4 +37,4 @@ java -jar ${EBROOTCOMPAREGENOTYPE}/CompareGenotypeCalls.jar \
 -s ${concordanceDirectory}/samples.chr${chr}.txt \
 --output "${concordanceDirectory}/concordance_chr${chr}"
 
-awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {print FILENAME,"firstRowCount="start,"lastRowCount="NF}' ${resultsDirectory}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.after
+awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {var=FILENAME; n=split(var,a,/\//); print a[n],"firstRowCount="start,"lastRowCount="NF}' ${resultsDirectory}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.after
