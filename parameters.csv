@@ -1,0 +1,2 @@
+gtoolVersion,workDirectory,jobsDirectory,concordanceDirectory
+GTOOL/0.7.5,test,${outputDirectory}/jobs,${resultsDirectory}/concordance
