@@ -1,7 +1,8 @@
 #MOLGENIS walltime=59:59:00 mem=4gb ppn=1
 
 #Parameter mapping
-#string chr,chrName
+#string chr
+#string chrName
 #string gtoolVersion
 #string inputDirectory
 #string outputDirectory
