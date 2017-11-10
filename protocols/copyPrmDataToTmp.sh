@@ -1,7 +1,8 @@
 #MOLGENIS walltime=5:59:00 mem=1gb ppn=1
 
 #Parameter mapping
-#string chr,chrName
+#string chr
+#string chrName
 #string inputDirectory
 #string outputDirectory
 #string listOfSamplesToRemove
@@ -12,8 +13,7 @@
 echo "${inputDirectory}"
 echo "${outputDirectory}"
 echo "${listOfSamplesToRemove}"
-echo "${chr}"
-echo ${chrName}
+echo "${chrName}"
 
 ###Copying data to tmp
 

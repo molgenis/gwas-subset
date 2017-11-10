@@ -39,7 +39,7 @@ do
 done
 
 if [[ -z "${inputDirectory:-}" ]]; then echo "ERROR: Option -i inputDirectory is empty." ; showHelp ; fi ;
-if [[ -z "${workDirectory:-}" ]]; then workDirectory="$( pwd )" ; fi ; echo "workDirectory=${workDirectory}"
+if [[ -z "${workDirectory:-}" ]]; then workDirectory="$( pwd )" ;elif [[ "${workDirectory}" =~ "prm0" ]];then echo ${workDirectory} not allowed on PRM.;showHelp;  fi ; echo "workDirectory=${workDirectory}"
 if [[ -z "${listOfSamplesToRemove:-}" ]]; then echo "ERROR: Option -l  listOfSamplesToRemove is empty." ; showHelp ; fi ;
 
 echo "${inputDirectory}"
