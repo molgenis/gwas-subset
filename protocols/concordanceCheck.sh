@@ -8,7 +8,7 @@
 #string resultsDirectory
 #string jobsDirectory
 #string concordanceDirectory
-#string CompareGenotypeCallsVersion
+#string compareGenotypeCallsVersion
 #string listOfSamplesToRemove
 
 # Let's do something
@@ -18,7 +18,7 @@ echo "${resultsDirectory}"
 echo "${listOfSamplesToRemove}"
 echo "${chr}"
 
-module load ${CompareGenotypeCallsVersion}
+module load ${compareGenotypeCallsVersion}
 
 mkdir -p "${concordanceDirectory}"
 
