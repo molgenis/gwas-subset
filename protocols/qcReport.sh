@@ -26,7 +26,7 @@ echo "# NUMBER OF SAMPLES BEFORE AND AFTER SAMPLE REMOVAL." >> ${resultsDirector
 for i in {0..20}
 do
 	echo "chr$((${i}+1)):" >> ${resultsDirectory}/QcReport.txt
-	grep 'Number of' ${jobsDirectory}/removeSamples_${i}.out >> ${resultsDirectory}/QcReport.txt
+	grep 'Number of' ${jobsDirectory}/s2_removeSamples_${i}.out >> ${resultsDirectory}/QcReport.txt
 done
 
 echo "" >> ${resultsDirectory}/QcReport.txt

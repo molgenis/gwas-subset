@@ -28,7 +28,7 @@ awk 'FNR > 2{print $2"\t"$2}' ${rawdataDirectory}/chr${chr}.sample >> ${concorda
 awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {var=FILENAME; n=split(var,a,/\//); print a[n],"firstRowCount="start,"lastRowCount="NF}' ${rawdataDirectory}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.before
 
 #
-java -XX:ParallelGCThreads=1 -Djava.io.tmpdir=${concordanceDirectory} -Xmx9g -jar ${EBROOTCOMPAREGENOTYPE}/CompareGenotypeCalls.jar \
+java -XX:ParallelGCThreads=1 -Djava.io.tmpdir=${concordanceDirectory} -Xmx9g -jar ${EBROOTCOMPAREGENOTYPECALLS}/CompareGenotypeCalls.jar \
 -d1 "${rawdataDirectory}/chr${chr}" \
 -D1 GEN \
 -d2 "${resultsDirectory}/chr${chr}" \

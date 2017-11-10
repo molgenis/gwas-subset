@@ -13,9 +13,12 @@ Usage:
 	$(basename $0) OPTIONS
 
 Options:
-	-i|--inputFolder	   Full path where the input files can be found from permanent storage		 	 [example: /myprmfolder/ containing *.sample *.gen files]
-	-o|--outputFolder	   Full path where the output will be stored on tmp storage				 [example: /mytmpfolder/ containing updated *.sample *.gen files]
-	-l|--listOfSamplesToRemove Full path and name of the list of samples which have to be removed from the GWAS data [example: /mytmpfolder/removesamples.txt]
+	-i|--inputDirectory	   Full path where the input files can be found from permanent storage		 	 	[example: /my/prm/folder/ containing *.sample *.gen files]
+	-w|--workDirectory	   Directory  on TMP storage where the output will be stored. 
+				   Default: current directory. 									[example: /my/tmp/folder/ containing updated *.sample *.gen files]
+	-l|--listOfSamplesToRemove Filename(.txt) of the list of samples which have to be removed from the GWAS data. 
+				   NOTE: File location needs to be in the workDirectory.					[example: /my/tmp/folder/ samples.txt]
+				   Currently: $( pwd ).
 	-h|--help		   showHelp
 ===========================================================================================================================================================================================
 
@@ -29,19 +32,32 @@ then
 	showHelp
 fi
 
-while getopts "i:o:l:h" opt; 
+while getopts "i:w:l:h" opt; 
 do
-	case $opt in h)showHelp;; i)inputDirectory="${OPTARG}";; o)outputDirectory="${OPTARG}";; l)listOfSamplesToRemove="${OPTARG}";; 
+	case $opt in h)showHelp;; i)inputDirectory="${OPTARG}";; w)workDirectory="${OPTARG}";; l)listOfSamplesToRemove="${OPTARG}";; 
 	esac 
 done
 
-echo "${inputDirectory}"
-echo "${outputDirectory}"
-echo "${listOfSamplesToRemove}"
+if [[ -z "${inputDirectory:-}" ]]; then echo "ERROR: Option -i inputDirectory is empty." ; showHelp ; fi ;
+if [[ -z "${workDirectory:-}" ]]; then workDirectory="$( pwd )" ; fi ; echo "workDirectory=${workDirectory}"
+if [[ -z "${listOfSamplesToRemove:-}" ]]; then echo "ERROR: Option -l  listOfSamplesToRemove is empty." ; showHelp ; fi ;
 
-jobsDirectory="${outputDirectory}/jobs"
-resultsDirectory="${outputDirectory}/results"
-rawdataDirectory="${outputDirectory}/rawdata"
+echo "${inputDirectory}"
+echo "${workDirectory}"
+echo "${workDirectory}/${listOfSamplesToRemove}"
+
+jobsDirectory="${workDirectory}/jobs"
+resultsDirectory="${workDirectory}/results"
+rawdataDirectory="${workDirectory}/rawdata"
+sampleList="${workDirectory}/${listOfSamplesToRemove}"
+
+if [ -e ${sampleList} ]
+then
+	echo "samples to remove:"
+	cat ${sampleList}
+else
+	echo "File does not exist: ${sampleList}"
+fi
 
 mkdir -p "${jobsDirectory}"
 mkdir -p "${resultsDirectory}"
@@ -54,9 +70,9 @@ sh "${EBROOTMOLGENISMINCOMPUTE}/molgenis_compute.sh" \
 -rundir "${jobsDirectory}" \
 -o inputDirectory="${inputDirectory};\
 resultsDirectory=${resultsDirectory};\
-listOfSamplesToRemove=${listOfSamplesToRemove};\
+listOfSamplesToRemove=${sampleList};\
 rawdataDirectory=${rawdataDirectory};\
-outputDirectory=${outputDirectory}" \
+outputDirectory=${workDirectory}" \
 -b slurm \
 -weave \
 --generate
@@ -67,4 +83,3 @@ match='--export=NONE'
 insert='#SBATCH --qos=ds'
 sed -i "s/$match/$match\n$insert/" s1_copyPrmDataToTmp_{0..21}.sh
 cd -
-
