@@ -20,10 +20,10 @@ set -u
 
 #Running gtool to remove samples
 
-#awk '{print "1\t"$1}' ${listOfSamplesToRemove} > ${resultsUnimputed}/samples.txt
+awk '{print "1\t"$1}' ${listOfSamplesToRemove} > ${resultsUnimputed}/samples.${chrName}.txt
 
 ${EBROOTPLINK}/plink --make-bed --file ${rawdataUnimputed}/${chrName} \
- --remove ${resultsUnimputed}/samples.txt \
+ --remove ${resultsUnimputed}/samples.${chrName}.txt \
 --out ${resultsUnimputed}/${chrName}
 
 
