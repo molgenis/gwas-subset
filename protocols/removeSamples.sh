@@ -4,19 +4,11 @@
 #string chr
 #string chrName
 #string gtoolVersion
-#string inputDirectory
-#string outputDirectory
+#string rawdataImputed
+#string resultsImputed
 #string resultsDirectory
 #string listOfSamplesToRemove
-#string rawdataDirectory
 
-# Let's do something
-echo "${inputDirectory}"
-echo "${outputDirectory}"
-echo "${listOfSamplesToRemove}"
-echo "${chr}"
-echo "${chrName}"
-echo "${rawdataDirectory}"
 
 #load modules and list currently loaded modules
 module load "${gtoolVersion}"
@@ -28,15 +20,15 @@ set -u
 
 #Running gtool to remove samples
 
-${EBROOTGTOOL}/gtool -S --g ${rawdataDirectory}/${chrName}.gen \
---s ${rawdataDirectory}/${chrName}.sample \
---og ${resultsDirectory}/chr${chr}.gen \
+${EBROOTGTOOL}/gtool -S --g ${rawdataImputed}/${chrName}.gen \
+--s ${rawdataImputed}/${chrName}.sample \
+--og ${resultsImputed}/chr${chr}.gen \
 --sample_excl ${listOfSamplesToRemove} \
---os ${resultsDirectory}/chr${chr}.sample
+--os ${resultsImputed}/chr${chr}.sample
 
 #md5sum new files
 
-cd "${resultsDirectory}"
+cd "${resultsImputed}"
 
 md5sum chr${chr}.gen > chr${chr}.gen.md5sum
 md5sum chr${chr}.sample > chr${chr}.sample.md5sum

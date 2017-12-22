@@ -1,41 +1,43 @@
 #MOLGENIS walltime=01:59:00 mem=1gb ppn=1
 #Parameter mapping
-#list chr
-#string inputDirectory
-#string outputDirectory
-#string rawdataDirectory
-#string resultsDirectory
+#string workDirectory
+#string rawdataImputed
+#string rawdataUnimputed
+#string resultsImputed
+#string resultsUnimputed
 #string jobsDirectory
 #string concordanceDirectory
+#string compareGenotypeCallsVersion
 #string listOfSamplesToRemove
-
-# Let's do something                 
-echo "${inputDirectory}"
-echo "${outputDirectory}"
-echo "${resultsDirectory}"
-echo "${jobsDirectory}"
-echo "${listOfSamplesToRemove}"
-echo "${chr}"
+#list chr
 
 
 
-rm -f "${resultsDirectory}"/QcReport.txt
+rm -f "${concordanceDirectory}"/QcReport.txt
 
-echo "# NUMBER OF SAMPLES BEFORE AND AFTER SAMPLE REMOVAL." >> ${resultsDirectory}/QcReport.txt
+echo "# NUMBER OF SAMPLES BEFORE AND AFTER SAMPLE REMOVAL." >> "${resultsImputed}"/QcReport.txt
 
-for i in {0..20}
+for i in {0..21}
 do
-	echo "chr$((${i}+1)):" >> ${resultsDirectory}/QcReport.txt
-	grep 'Number of' ${jobsDirectory}/s2_removeSamples_${i}.out >> ${resultsDirectory}/QcReport.txt
+	echo "chr$((${i}+1)):" >> "${resultsImputed}"/QcReport.txt
+	grep 'Number of' ${jobsDirectory}/s2_removeSamples_${i}.out >> ${resultsImputed}/QcReport.txt
+
+	grep -P "(variants\sloaded|people )" s3_removeSamplesUnimputed_${i}.out >> ${resultsImputed}/QcReport.txt
 done
 
-echo "" >> ${resultsDirectory}/QcReport.txt
-echo "# COLLUMN NUMBER BEFORE AND AFTER SAMPLE REMOVAL." >> ${resultsDirectory}/QcReport.txt
-echo "# Number of removes collumns should (number of removed samples *3)" >> ${resultsDirectory}/QcReport.txt
+echo "" >> ${resultsImputed}/QcReport.txt
+echo "# COLLUMN NUMBER BEFORE AND AFTER SAMPLE REMOVAL." >> ${resultsImputed}/QcReport.txt
+echo "# Number of removes collumns should (number of removed samples *3)" >> "${resultsImputed}"/QcReport.txt
 
 for i in "${chr[@]}"
 do
-	echo "chr${i}" >> ${resultsDirectory}/QcReport.txt
-	cat ${concordanceDirectory}/chr${i}.gen.count.before >> ${resultsDirectory}/QcReport.txt
-	cat ${concordanceDirectory}/chr${i}.gen.count.after >> ${resultsDirectory}/QcReport.txt
+	echo "chr${i}" >> ${resultsImputed}/QcReport.txt
+	cat "${concordanceDirectory}/chr${i}.gen.count.imputed.before" >> "${resultsImputed}"/QcReport.txt
+	cat "${concordanceDirectory}/chr${i}.gen.count.imputed.after" >> "${resultsImputed}"/QcReport.txt
+	cat "${concordanceDirectory}/chr${i}.gen.count.unimputed.before" >> "${resultsImputed}"/QcReport.txt
+        cat "${concordanceDirectory}/chr${i}.gen.count.unimputed.after" >> "${resultsImputed}"/QcReport.txt
+	echo "lowest sample Concordance unimputed data:" >> "${resultsImputed}"/QcReport.txt
+	awk '{print $5}' "${concordanceDirectory}/concordance_unimputed_chr${i}.sample" | sort | head -2 >> "${resultsImputed}"/QcReport.txt
+	echo "lowest sample Concordance imputed data:" >> "${resultsImputed}"/QcReport.txt
+        awk '{print $5}' "${concordanceDirectory}/concordance_imputed_chr${i}.sample" | sort | head -2 >> "${resultsImputed}"/QcReport.txt
 done

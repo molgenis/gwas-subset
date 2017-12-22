@@ -1,2 +1,11 @@
-gtoolVersion,workDirectory,jobsDirectory,concordanceDirectory,compareGenotypeCallsVersion
-GTOOL/0.7.5,test,${outputDirectory}/jobs,${resultsDirectory}/concordance,CompareGenotypeCalls/1.7-Java-1.8.0_74
+##### GENERAL DIRECTORIES #####
+gtoolVersion,GTOOL/0.7.5
+plinkVersion,plink/1.9-foss-2015b
+compareGenotypeCallsVersion,CompareGenotypeCalls/1.7-Java-1.8.0_74
+jobsDirectory,${workDirectory}/jobs
+concordanceDirectory,${resultsDirectory}/concordance
+resultsDirectory,${workDirectory}/results
+resultsImputed,${resultsDirectory}/imputed
+resultsUnimputed,${resultsDirectory}/unimputed
+rawdataImputed,${workDirectory}/rawdata/imputed
+rawdataUnimputed,${workDirectory}/rawdata/unimputed
