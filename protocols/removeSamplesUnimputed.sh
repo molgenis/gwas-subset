@@ -31,9 +31,9 @@ ${EBROOTPLINK}/plink --make-bed --file ${rawdataUnimputed}/${chrName} \
 
 cd "${resultsUnimputed}"
 
-md5sum chr${chr}.bed > chr${chr}.bed.md5sum
-md5sum chr${chr}.bim > chr${chr}.bim.md5sum
-md5sum chr${chr}.fam > chr${chr}.fam.md5sum
+md5sum chr${chr}.bed > chr${chr}.bed.md5
+md5sum chr${chr}.bim > chr${chr}.bim.md5
+md5sum chr${chr}.fam > chr${chr}.fam.md5
 
 cd -
 

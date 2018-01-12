@@ -30,8 +30,8 @@ ${EBROOTGTOOL}/gtool -S --g ${rawdataImputed}/${chrName}.gen \
 
 cd "${resultsImputed}"
 
-md5sum chr${chr}.gen > chr${chr}.gen.md5sum
-md5sum chr${chr}.sample > chr${chr}.sample.md5sum
+md5sum chr${chr}.gen > chr${chr}.gen.md5
+md5sum chr${chr}.sample > chr${chr}.sample.md5
 
 cd -
 
