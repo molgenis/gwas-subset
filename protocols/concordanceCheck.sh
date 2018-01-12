@@ -1,40 +1,43 @@
-#MOLGENIS walltime=05:59:00 mem=10gb ppn=1
+#MOLGENIS walltime=23:59:00 mem=10gb ppn=1
 
 #Parameter mapping
 #string chr
-#string inputDirectory
-#string outputDirectory
-#string rawdataDirectory
-#string resultsDirectory
+#string workDirectory
+#string rawdataImputed
+#string rawdataUnimputed
+#string resultsImputed
+#string resultsUnimputed
 #string jobsDirectory
 #string concordanceDirectory
 #string compareGenotypeCallsVersion
 #string listOfSamplesToRemove
 
-# Let's do something
-echo "${inputDirectory}"
-echo "${outputDirectory}"
-echo "${resultsDirectory}"
-echo "${listOfSamplesToRemove}"
-echo "${chr}"
 
 module load ${compareGenotypeCallsVersion}
 
 mkdir -p "${concordanceDirectory}"
 
 echo -e "data1Id\tdata2Id" > ${concordanceDirectory}/samples.chr${chr}.txt
-awk 'FNR > 2{print $2"\t"$2}' ${rawdataDirectory}/chr${chr}.sample >> ${concordanceDirectory}/samples.chr${chr}.txt
+awk 'FNR > 2{print $2"\t"$2}' ${rawdataImputed}/chr${chr}.sample >> ${concordanceDirectory}/samples.chr${chr}.txt
 
-awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {var=FILENAME; n=split(var,a,/\//); print a[n],"firstRowCount="start,"lastRowCount="NF}' ${rawdataDirectory}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.before
+awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {var=FILENAME; n=split(var,a,/\//); print a[n],"firstRowCount="start,"lastRowCount="NF}' ${rawdataImputed}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.imputed.before
 
 #
 java -XX:ParallelGCThreads=1 -Djava.io.tmpdir=${concordanceDirectory} -Xmx9g -jar ${EBROOTCOMPAREGENOTYPECALLS}/CompareGenotypeCalls.jar \
--d1 "${rawdataDirectory}/chr${chr}" \
--D1 GEN \
--d2 "${resultsDirectory}/chr${chr}" \
--D2 GEN \
--c1 "${chr}" \
+-d1 "${rawdataUnimputed}/chr${chr}" \
+-D1 PED_MAP \
+-d2 "${resultsUnimputed}/chr${chr}" \
+-D2 PLINK_BED \
 -s ${concordanceDirectory}/samples.chr${chr}.txt \
---output "${concordanceDirectory}/concordance_chr${chr}"
+--output "${concordanceDirectory}/concordance_unimputed_chr${chr}"
 
-awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {var=FILENAME; n=split(var,a,/\//); print a[n],"firstRowCount="start,"lastRowCount="NF}' ${resultsDirectory}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.after
+java -XX:ParallelGCThreads=1 -Djava.io.tmpdir=${concordanceDirectory} -Xmx9g -jar ${EBROOTCOMPAREGENOTYPECALLS}/CompareGenotypeCalls.jar \
+-d1 "${rawdataImputed}/chr${chr}" \
+-D1 PED_MAP \
+-d2 "${resultsImputed}/chr${chr}" \
+-D2 PED_MAP \
+-c1 ${chr} \
+-s ${concordanceDirectory}/samples.chr${chr}.txt \
+--output "${concordanceDirectory}/concordance_imputed_chr${chr}"
+
+awk -F ' ' 'BEGIN {start=0;end=0};{if(NR==1){start=NF}};END {var=FILENAME; n=split(var,a,/\//); print a[n],"firstRowCount="start,"lastRowCount="NF}' ${resultsImputed}/chr${chr}.gen > ${concordanceDirectory}/chr${chr}.gen.count.imputed.after

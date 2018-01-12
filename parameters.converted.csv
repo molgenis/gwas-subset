@@ -1,0 +1,2 @@
+gtoolVersion,plinkVersion,compareGenotypeCallsVersion,jobsDirectory,concordanceDirectory,resultsDirectory,resultsImputed,resultsUnimputed,rawdataImputed,rawdataUnimputed
+GTOOL/0.7.5,plink/1.9-foss-2015b,CompareGenotypeCalls/1.7-Java-1.8.0_74,${workDirectory}/jobs,${resultsDirectory}/concordance,${workDirectory}/results,${resultsDirectory}/imputed,${resultsDirectory}/unimputed,${workDirectory}/rawdata/imputed,${workDirectory}/rawdata/unimputed

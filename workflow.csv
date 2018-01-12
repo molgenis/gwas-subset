@@ -1,5 +1,6 @@
 step,protocol,dependencies
 s1_copyPrmDataToTmp,protocols/copyPrmDataToTmp.sh,
 s2_removeSamples,protocols/removeSamples.sh,s1_copyPrmDataToTmp
-s3_concordanceCheck,protocols/concordanceCheck.sh,s2_removeSamples
-s4_qcReport,protocols/qcReport.sh,s3_concordanceCheck
+s3_removeSamplesUnimputed,protocols/removeSamplesUnimputed.sh,s1_copyPrmDataToTmp
+s4_concordanceCheck,protocols/concordanceCheck.sh,s2_removeSamples;s3_removeSamplesUnimputed
+s5_qcReport,protocols/qcReport.sh,s4_concordanceCheck
