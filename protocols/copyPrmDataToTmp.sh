@@ -17,7 +17,7 @@ rsync --verbose --links --no-perms --times --group --no-owner --devices --specia
 "${rawdataImputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
-"${imputedDirectory}/*.md5" \
+"${imputedDirectory}/"*.md5 \
 "${rawdataImputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
@@ -29,7 +29,7 @@ rsync --verbose --links --no-perms --times --group --no-owner --devices --specia
 "${resultsImputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
-"${imputedDirectory}/*_info.md5" \
+"${imputedDirectory}/"*_info.md5 \
 "${resultsImputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
@@ -41,9 +41,5 @@ rsync --verbose --links --no-perms --times --group --no-owner --devices --specia
 "${rawdataUnimputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
-"${unimputedDirectory}/${chrName}.ped.md5" \
-"${rawdataUnimputed}/"
-
-rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
-"${unimputedDirectory}/${chrName}.map.md5" \
+"${unimputedDirectory}/"*.md5 \
 "${rawdataUnimputed}/"
