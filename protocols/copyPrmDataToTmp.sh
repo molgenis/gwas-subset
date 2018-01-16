@@ -29,15 +29,11 @@ rsync --verbose --links --no-perms --times --group --no-owner --devices --specia
 "${resultsImputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
-"${imputedDirectory}/"*_info.md5 \
-"${resultsImputed}/"
-
-rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
-"${unimputedDirectory}/${chrName}.ped" \
+"${unimputedDirectory}/${chrName}.haps" \
 "${rawdataUnimputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \
-"${unimputedDirectory}/${chrName}.map" \
+"${unimputedDirectory}/${chrName}.sample" \
 "${rawdataUnimputed}/"
 
 rsync --verbose --links --no-perms --times --group --no-owner --devices --specials --checksum \

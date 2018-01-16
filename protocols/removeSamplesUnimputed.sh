@@ -3,7 +3,7 @@
 #Parameter mapping
 #string chr
 #string chrName
-#string plinkVersion
+#string shapeitVersion
 #string rawdataUnimputed
 #string resultsUnimputed
 #string resultsDirectory
@@ -11,7 +11,7 @@
 
 
 #load modules and list currently loaded modules
-module load "${plinkVersion}"
+module load "${shapeitVersion}"
 module list
 
 set -e
@@ -20,21 +20,23 @@ set -u
 
 #Running gtool to remove samples
 
-awk '{print "1\t"$1}' ${listOfSamplesToRemove} > ${resultsUnimputed}/samples.${chrName}.txt
+awk '{print $1}' ${listOfSamplesToRemove} > ${resultsUnimputed}/samples.${chrName}.txt
 
-${EBROOTPLINK}/plink --make-bed --file ${rawdataUnimputed}/${chrName} \
- --remove ${resultsUnimputed}/samples.${chrName}.txt \
---out ${resultsUnimputed}/${chrName}
+#${EBROOTPLINK}/plink --make-bed --file ${rawdataUnimputed}/${chrName} \
+# --remove ${resultsUnimputed}/samples.${chrName}.txt \
+#--out ${resultsUnimputed}/${chrName}
+
+$EBROOTSHAPEIT/shapeit -convert \
+--input-haps ${rawdataUnimputed}/${chrName} \
+--exclude-ind ${resultsUnimputed}/samples.${chrName}.txt \
+--output-haps ${resultsUnimputed}/${chrName}
 
 
 #md5sum new files
 
 cd "${resultsUnimputed}"
 
-md5sum chr${chr}.bed > chr${chr}.bed.md5
-md5sum chr${chr}.bim > chr${chr}.bim.md5
-md5sum chr${chr}.fam > chr${chr}.fam.md5
+md5sum chr${chr}.haps > chr${chr}.haps.md5
+md5sum chr${chr}.sample > chr${chr}.sample.md5
 
 cd -
-
-
