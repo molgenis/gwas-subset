@@ -14,7 +14,7 @@ Usage:
 
 Options:
 	-i|--imputedDirectory	   Full path where the IMPUTED files can be found from permanent storage		 	 [example: /my/prm/folder/ containing *.sample *.gen files]
-	-u|--unimputedDirectory    Full path where the UNIMPUTED files can be found from permanent storage                       [example: /my/prm/folder/ containing *.? *.? files]
+	-u|--unimputedDirectory    Full path where the UNIMPUTED files can be found from permanent storage                       [example: /my/prm/folder/ containing *.haps *.sample files]
 	-w|--workDirectory	   Directory  on TMP storage where the output will be stored.
 				   Default: current directory. 									 [example: /my/tmp/folder/ containing updated *.sample *.gen files]
 	-l|--listOfSamplesToRemove Filename(.txt) of the list of samples which have to be removed from the GWAS data.
