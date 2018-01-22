@@ -34,9 +34,9 @@ java -XX:ParallelGCThreads=1 -Djava.io.tmpdir=${concordanceDirectory} -Xmx9g -ja
 
 java -XX:ParallelGCThreads=1 -Djava.io.tmpdir=${concordanceDirectory} -Xmx9g -jar ${EBROOTCOMPAREGENOTYPECALLS}/CompareGenotypeCalls.jar \
 -d1 "${rawdataImputed}/chr${chr}" \
--D1 PED_MAP \
+-D1 GEN \
 -d2 "${resultsImputed}/chr${chr}" \
--D2 PED_MAP \
+-D2 GEN \
 -c1 ${chr} \
 -s ${concordanceDirectory}/samples.chr${chr}.txt \
 --output "${concordanceDirectory}/concordance_imputed_chr${chr}"
