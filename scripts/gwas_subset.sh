@@ -73,6 +73,7 @@ mkdir -p "${rawdataUnimputed}"
 
 if [ -e ${sampleList} ]
 then
+	dos2unix ${sampleList}
 	echo "samples to remove:"
 	cat ${sampleList}
 	awk '{print "1\t"$1}' ${sampleList} > ${resultsUnimputed}/samples.txt
